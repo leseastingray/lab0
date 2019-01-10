@@ -117,8 +117,13 @@ namespace TicTacToe
         private bool IsWinner(out int whichDimension, out int whichOne)
         {
             // rows
+            // for row starting at 0 and less than SIZE and incremented by 1
             for (int row = 0; row < SIZE; row++)
             {
+                // if there is a winner in a row
+                //    whichDimension = ROW
+                //    whichOne = the winning row
+                //    return true
                 if (IsRowWinner(row))
                 {
                     whichDimension = ROW;
@@ -278,10 +283,12 @@ namespace TicTacToe
 
         private void newGameButton_Click(object sender, EventArgs e)
         {
+
         }
 
         private void exitButton_Click(object sender, EventArgs e)
         {
+            this.Close();
         }
     }
 }

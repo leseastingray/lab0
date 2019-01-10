@@ -68,6 +68,8 @@ namespace Memory
         // TODO:  students should write this one
         private bool IsMatch(int index1, int index2)
         {
+            // if index1 is equal to index2
+            // IsMatch = true
             return true;
         }
 
@@ -108,11 +110,12 @@ namespace Memory
             card.Image = Image.FromFile(System.Environment.CurrentDirectory + "\\Cards\\black_back.jpg");
         }
 
-        // TODO:  students should write all of these
+        // TODO:  students should write all of these!!!
         // shows (loads) the backs of all of the cards
         private void LoadAllCardBacks()
         {
-
+            PictureBox card = (PictureBox)this.Controls["card"];
+            card.Image = Image.FromFile(System.Environment.CurrentDirectory + "\\Cards\\black_back.jpg");
         }
 
         // Hides a picture box
@@ -176,6 +179,12 @@ namespace Memory
              *      to make sure that the cards are loaded successfully and that
              *      they're shuffled.  If you get all 2s, something is wrong.
             */
+            // for card picture boxes starting at card1, less than 20, increment by 1
+            for("card" + ToString(int i = 1); i < 20; i++)
+            {
+                GetCardFilename(i);
+                FillCardFilenames();
+            }
         }
 
         private void card_Click(object sender, EventArgs e)
@@ -184,7 +193,7 @@ namespace Memory
             int cardNumber = int.Parse(card.Name.Substring(4));
 
             /* 
-             * if the first card isn't picked yet
+             * if the first card = isn't picked yet
              *      save the first card index
              *      load the card
              *      disable the card
