@@ -27,8 +27,8 @@ namespace Memory
 
         #region Methods
 
-        // This method finds a picture box on the board based on it's number (1 - 20)
-        // It takes an integer as it's parameter and returns the picture box controls
+        // This method finds a picture box on the board based on its number (1 - 20)
+        // It takes an integer as its parameter and returns the picture box controls
         // that's name contains that number
         private PictureBox GetCard(int i)
         {
@@ -36,8 +36,8 @@ namespace Memory
             return card;
         }
 
-        // This method gets the filename for the image displayed in a picture box given it's number
-        // It takes an integer as it's parameter and returns a string containing the 
+        // This method gets the filename for the image displayed in a picture box given its number
+        // It takes an integer as its parameter and returns a string containing the 
         // filename for the image in the corresponding picture box
         private string GetCardFilename(int i)
         {
@@ -45,7 +45,7 @@ namespace Memory
         }
 
         // This method changes the filename for a given picture box
-        // It takes an integer and a string that represents a filename as it's parameters
+        // It takes an integer and a string that represents a filename as its parameters
         // It doesn't return a value but stores the filename for the image to be displayed
         // in the picture box.  It doesn't actually display the new image
         private void SetCardFilename(int i, string filename)
@@ -68,8 +68,15 @@ namespace Memory
         // TODO:  students should write this one
         private bool IsMatch(int index1, int index2)
         {
-            // if index1 is equal to index2
-            // IsMatch = true
+            /* GetCardValue index1
+             * GetCardValue index2
+             * if index1 is equal to index2
+             * IsMatch = true
+             */
+            if(index1 != index2)
+            {
+                return false;
+            }
             return true;
         }
 
@@ -93,6 +100,30 @@ namespace Memory
         // TODO:  students should write this one
         private void ShuffleCards()
         {
+            /* Get random number
+             * Get card value of that number
+             * Assign temp variable to card value
+             * get 2nd value
+             * if 1st card is not equal to 2nd card
+             *     set 1st to 2nd
+             *     set 2nd to temp
+             * for each picture box beginning at 1, fill with random card up till 20
+             */
+            int firstCardNumber;
+            Random rand = new Random();
+            firstCardNumber = rand.Next(20) + 1;
+            GetCardValue(firstCardNumber);
+
+            for (int i = 1; 2 <= 20; i++)
+            {
+                secondCardNumber = rand.Next(20) + 1;
+                GetCardValue(secondCardNumber);
+                if (firstCardNumber != secondCardNumber)
+                {
+                    int tempCardNumber = firstCardNumber;
+                    secondCardNumber = tempCardNumber;
+                }
+            }
         }
 
         // This method loads (shows) an image in a picture box.  Assumes that filenames
@@ -121,7 +152,8 @@ namespace Memory
         // Hides a picture box
         private void HideCard(int i)
         {
-
+            PictureBox card = GetCard(i);
+            card.Visible = false;
         }
 
         private void HideAllCards()
@@ -180,11 +212,12 @@ namespace Memory
              *      they're shuffled.  If you get all 2s, something is wrong.
             */
             // for card picture boxes starting at card1, less than 20, increment by 1
-            for("card" + ToString(int i = 1); i < 20; i++)
+            for (int i = 1; i <= 20; i++)
             {
-                GetCardFilename(i);
-                FillCardFilenames();
+                GetCard(i);
+                LoadCard(i);
             }
+            LoadAllCardBacks();
         }
 
         private void card_Click(object sender, EventArgs e)

@@ -42,7 +42,7 @@ namespace TicTacToe
         }
 
         // This method does the "reverse" process of GetSquare
-        // It takes a label on the form as it's parameter and
+        // It takes a label on the form as its parameter and
         // returns the row and column of that square as output parameters
         private void GetRowAndColumn(Label l, out int row, out int column)
         {
@@ -58,7 +58,7 @@ namespace TicTacToe
         {
             Label square = GetSquare(row, 0);
             string symbol = square.Text;
-            for (int col = 1; col < SIZE; col++)
+            for (int col = 1; col < SIZE - 1; col++)
             {
                 square = GetSquare(row, col);
                 if (symbol == EMPTY || square.Text != symbol)
@@ -75,9 +75,9 @@ namespace TicTacToe
 
         private bool IsColumnWinner(int col)
         {
-                Label square = GetSquare(0, col);
-                string symbol = square.Text;
-                for (int row = 1; row < SIZE; row ++)
+            Label square = GetSquare(0, col);
+            string symbol = square.Text;
+            for (int row = 1; row < SIZE - 1; row ++)
                 {
                     square = GetSquare(row, col);
                     if (symbol == EMPTY || square.Text != symbol)
@@ -423,10 +423,10 @@ namespace TicTacToe
                 DisableAllSquares();
                 HighlightWinner("Computer", winningDimension, winningValue);
             }
-             else if (IsFull())
-             {
+            else if (IsFull())
+            {
                 resultLabel.Text = "It's a tie!";
-             }
+            }
         }
 
         private void newGameButton_Click(object sender, EventArgs e)
