@@ -21,7 +21,7 @@ namespace TicTacToe
         const string COMPUTER_SYMBOL = "O";
         const string EMPTY = "";
 
-        const int SIZE = 9;
+        const int SIZE = 5;
 
         // constants for the 2 diagonals
         const int TOP_LEFT_TO_BOTTOM_RIGHT = 1;
@@ -58,7 +58,7 @@ namespace TicTacToe
         {
             Label square = GetSquare(row, 0);
             string symbol = square.Text;
-            for (int col = 1; col < SIZE - 1; col++)
+            for (int col = 1; col < SIZE; col++)
             {
                 square = GetSquare(row, col);
                 if (symbol == EMPTY || square.Text != symbol)
@@ -77,7 +77,7 @@ namespace TicTacToe
         {
             Label square = GetSquare(0, col);
             string symbol = square.Text;
-            for (int row = 1; row < SIZE - 1; row ++)
+            for (int row = 1; row < SIZE; row ++)
                 {
                     square = GetSquare(row, col);
                     if (symbol == EMPTY || square.Text != symbol)
@@ -274,11 +274,11 @@ namespace TicTacToe
             {
                 case ROW:
                     HighlightRow(winningValue);
-                    resultLabel.Text = (player + "wins!");
+                    resultLabel.Text = (player + " wins!");
                     break;
                 case COLUMN:
                     HighlightColumn(winningValue);
-                    resultLabel.Text = (player + "wins!");
+                    resultLabel.Text = (player + " wins!");
                     break;
                 case DIAGONAL:
                     HighlightDiagonal(winningValue);
@@ -312,6 +312,7 @@ namespace TicTacToe
         }
 
         private void MakeComputerMove()
+        {
             /* random generator = new Random()
              * int row = generator.Next(0, 3)
              * do
@@ -324,7 +325,6 @@ namespace TicTacToe
              * disable the square
              * while square.Text is not EMPTY and IsFull is not true
              */
-        {
             int row, col;
             Random rand = new Random();
             Label square;
@@ -384,6 +384,10 @@ namespace TicTacToe
             int winningDimension = NONE;
             int winningValue = NONE;
 
+            /* Click label
+             * Change clicked label text to USER_SYMBOL
+             * Disable clicked label
+             */
             Label clickedLabel = (Label)sender;
             clickedLabel.Text = USER_SYMBOL;
             DisableSquare(clickedLabel);
@@ -410,28 +414,32 @@ namespace TicTacToe
             else
             {
                 MakeComputerMove();
-            }
-            /* if IsWinner is true after computer move
-             *    disable all squares
-             *    call HighlightWinner() method
-             * else if IsFull is true
-             *    disable all squares
-             *    display "It's a tie!" in resultLabel text
-             */
-            if (IsWinner(out winningDimension, out winningValue))
-            {
-                DisableAllSquares();
-                HighlightWinner("Computer", winningDimension, winningValue);
-            }
-            else if (IsFull())
-            {
-                resultLabel.Text = "It's a tie!";
+                /* if IsWinner is true after computer move
+                 *    disable all squares
+                 *    call HighlightWinner() method
+                 * else if IsFull is true
+                 *    disable all squares
+                 *    display "It's a tie!" in resultLabel text
+                 */
+                if (IsWinner(out winningDimension, out winningValue))
+                {
+                    DisableAllSquares();
+                    HighlightWinner("Computer", winningDimension, winningValue);
+                }
+                else if (IsFull())
+                {
+                    resultLabel.Text = "It's a tie!";
+                }
             }
         }
 
         private void newGameButton_Click(object sender, EventArgs e)
-        // newGameButton calls ResetSquares() method
+        /* newGameButton click
+        * calls DisableAllSquares()
+        * calls ResetSquares()
+        */
         {
+            DisableAllSquares();
             ResetSquares();
         }
 
