@@ -109,10 +109,17 @@ namespace Memory
              *     set 2nd to temp
              * for each picture box beginning at 1, fill with random card up till 20
              */
-            int firstCardNumber;
             Random rand = new Random();
-            firstCardNumber = rand.Next(20) + 1;
-            GetCardValue(firstCardNumber);
+            int first = rand.Next(20) + 1;
+            string firstValue = GetCardValue(first);
+            string temp = cardValue;
+            int second = rand.Next(20) + 1;
+            string secondValue = GetCardValue(second);
+
+            if (firstValue != secondValue)
+            {
+                SetCardFilename(first, secondValue);
+            }
 
             for (int i = 1; 2 <= 20; i++)
             {
@@ -130,7 +137,7 @@ namespace Memory
         // have been filled in an earlier call to FillCardFilenames
         private void LoadCard(int i)
         {
-            PictureBox card = GetCard(i);
+            PictureBox card = this.GetCard(i);
             card.Image = Image.FromFile(System.Environment.CurrentDirectory + "\\Cards\\" + GetCardFilename(i));
         }
 
@@ -145,8 +152,10 @@ namespace Memory
         // shows (loads) the backs of all of the cards
         private void LoadAllCardBacks()
         {
-            PictureBox card = (PictureBox)this.Controls["card"];
-            card.Image = Image.FromFile(System.Environment.CurrentDirectory + "\\Cards\\black_back.jpg");
+            for (int i = 1; i <= 20; i++)
+            {
+                LoadCardBack(i);
+            }
         }
 
         // Hides a picture box
@@ -158,7 +167,11 @@ namespace Memory
 
         private void HideAllCards()
         {
-
+            for (int i = 1; i <= 20; i++)
+            {
+                PictureBox card = (PictureBox)this.Controls["card" + i.ToString()];
+                card.Visible = false;
+            }
         }
 
         // shows a picture box
@@ -212,11 +225,6 @@ namespace Memory
              *      they're shuffled.  If you get all 2s, something is wrong.
             */
             // for card picture boxes starting at card1, less than 20, increment by 1
-            for (int i = 1; i <= 20; i++)
-            {
-                GetCard(i);
-                LoadCard(i);
-            }
             LoadAllCardBacks();
         }
 
@@ -224,6 +232,7 @@ namespace Memory
         {
             PictureBox card = (PictureBox)sender;
             int cardNumber = int.Parse(card.Name.Substring(4));
+    
 
             /* 
              * if the first card = isn't picked yet
@@ -237,6 +246,19 @@ namespace Memory
              *      start the flip timer
              *  end if
             */
+            if (firstCardNumber == NOT_PICKED_YET)
+            {
+                firstCardNumber = cardNumber;
+                LoadCard(firstCardNumber);
+                DisableCard(firstCardNumber);
+            }
+            else
+            {
+                secondCardNumber = cardNumber;
+                LoadCard(secondCardNumber);
+                DisableAllCards();
+                flipTimer_Tick(sender, e);
+            }
         }
 
         private void flipTimer_Tick(object sender, EventArgs e)
@@ -262,6 +284,7 @@ namespace Memory
              *      enable all of the cards left on the board
              * end if
              */
+
         }
         #endregion
     }
