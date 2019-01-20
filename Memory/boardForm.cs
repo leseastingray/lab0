@@ -112,7 +112,7 @@ namespace Memory
             Random rand = new Random();
             int first = rand.Next(20) + 1;
             string firstValue = GetCardValue(first);
-            string temp = cardValue;
+            string temp = firstValue;
             int second = rand.Next(20) + 1;
             string secondValue = GetCardValue(second);
 
@@ -121,7 +121,7 @@ namespace Memory
                 SetCardFilename(first, secondValue);
             }
 
-            for (int i = 1; 2 <= 20; i++)
+            for (int i = 1; i <= 20; i++)
             {
                 secondCardNumber = rand.Next(20) + 1;
                 GetCardValue(secondCardNumber);
@@ -169,20 +169,23 @@ namespace Memory
         {
             for (int i = 1; i <= 20; i++)
             {
-                PictureBox card = (PictureBox)this.Controls["card" + i.ToString()];
-                card.Visible = false;
+                HideCard(i);
             }
         }
 
         // shows a picture box
         private void ShowCard(int i)
         {
-
+            PictureBox card = GetCard(i);
+            card.Visible = true;
         }
 
         private void ShowAllCards()
         {
-
+            for (int i = 1; i <= 20; i++)
+            {
+                ShowCard(i);
+            }
         }
 
         // disables a picture box
@@ -225,6 +228,8 @@ namespace Memory
              *      they're shuffled.  If you get all 2s, something is wrong.
             */
             // for card picture boxes starting at card1, less than 20, increment by 1
+            FillCardFilenames();
+            ShuffleCards();
             LoadAllCardBacks();
         }
 
