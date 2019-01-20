@@ -37,7 +37,7 @@ namespace Memory
         }
 
         // This method gets the filename for the image displayed in a picture box given its number
-        // It takes an integer as its parameter and returns a string containing the 
+        // It takes an integer as its parameter and returns a string containing the
         // filename for the image in the corresponding picture box
         private string GetCardFilename(int i)
         {
@@ -111,25 +111,23 @@ namespace Memory
              */
             Random rand = new Random();
             int first = rand.Next(20) + 1;
-            string firstValue = GetCardValue(first);
-            string temp = firstValue;
+            string firstValue = GetCardFilename(first);
+            string tempValue = firstValue;
             int second = rand.Next(20) + 1;
-            string secondValue = GetCardValue(second);
-
-            if (firstValue != secondValue)
-            {
-                SetCardFilename(first, secondValue);
-            }
+            string secondValue = GetCardFilename(second);
 
             for (int i = 1; i <= 20; i++)
             {
-                secondCardNumber = rand.Next(20) + 1;
-                GetCardValue(secondCardNumber);
-                if (firstCardNumber != secondCardNumber)
-                {
-                    int tempCardNumber = firstCardNumber;
-                    secondCardNumber = tempCardNumber;
-                }
+              if (first != second)
+              {
+                  SetCardFilename(i, secondValue);
+                  firstValue = secondValue;
+                  secondValue = tempValue;
+              }
+              else
+              {
+                second = rand.Next(20) + 1;
+              }
             }
         }
 
@@ -137,7 +135,7 @@ namespace Memory
         // have been filled in an earlier call to FillCardFilenames
         private void LoadCard(int i)
         {
-            PictureBox card = this.GetCard(i);
+            PictureBox card = GetCard(i);
             card.Image = Image.FromFile(System.Environment.CurrentDirectory + "\\Cards\\" + GetCardFilename(i));
         }
 
@@ -191,27 +189,43 @@ namespace Memory
         // disables a picture box
         private void DisableCard(int i)
         {
+            PictureBox card = GetCard(i);
+            card.Enabled = false;
 
         }
 
         private void DisableAllCards()
         {
-
+            for (int i = 1; i <= 20; i++)
+            {
+                DisableCard(i);
+            }
         }
 
         private void EnableCard(int i)
         {
-
+            PictureBox card = GetCard(i);
+            card.Enabled = true;
         }
 
         private void EnableAllCards()
         {
-
+            for (int i = 1; i<= 20; i++)
+            {
+                EnableCard(i);
+            }
         }
-    
+
         private void EnableAllVisibleCards()
         {
-
+            for (int i = 1; i <= 20; i++)
+            {
+                PictureBox card = GetCard(i);
+                if (card.Visible == true)
+                {
+                    EnableCard(i);
+                }
+            }
         }
 
         #endregion
@@ -219,10 +233,10 @@ namespace Memory
         #region EventHandlers
         private void boardForm_Load(object sender, EventArgs e)
         {
-            /* 
+            /*
              * Fill the picture boxes with filenames
              * Shuffle the cards
-             * Load all of the card backs - 
+             * Load all of the card backs -
              *      While you're testing you might want to load all of card faces
              *      to make sure that the cards are loaded successfully and that
              *      they're shuffled.  If you get all 2s, something is wrong.
@@ -231,15 +245,16 @@ namespace Memory
             FillCardFilenames();
             ShuffleCards();
             LoadAllCardBacks();
+            EnableAllCards();
         }
 
         private void card_Click(object sender, EventArgs e)
         {
             PictureBox card = (PictureBox)sender;
             int cardNumber = int.Parse(card.Name.Substring(4));
-    
 
-            /* 
+
+            /*
              * if the first card = isn't picked yet
              *      save the first card index
              *      load the card
@@ -262,7 +277,7 @@ namespace Memory
                 secondCardNumber = cardNumber;
                 LoadCard(secondCardNumber);
                 DisableAllCards();
-                flipTimer_Tick(sender, e);
+                //flipTimer_Tick(sender, e);
             }
         }
 
@@ -289,6 +304,32 @@ namespace Memory
              *      enable all of the cards left on the board
              * end if
              */
+
+              if (IsMatch(firstCardNumber, secondCardNumber))
+              {
+                  matches++;
+                  //HideCard()
+                  //HideCard()
+                  firstCardNumber = NOT_PICKED_YET;
+                  secondCardNumber = NOT_PICKED_YET;
+
+                  if (matches == 10)
+                  {
+                      MessageBox.Show("Game Completed");
+                  }
+                  else
+                  {
+                      EnableAllVisibleCards();
+                  }
+              }
+              else
+              {
+
+                  firstCardNumber = NOT_PICKED_YET;
+                  secondCardNumber = NOT_PICKED_YET;
+                  EnableAllVisibleCards();
+              }
+
 
         }
         #endregion
