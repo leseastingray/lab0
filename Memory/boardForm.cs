@@ -74,7 +74,9 @@ namespace Memory
              * if index1 is equal to index2
              * IsMatch = true
              */
-            if(index1 != index2)
+            string firstCard = GetCardValue(index1);
+            string secondCard = GetCardValue(index2);
+            if (index1 != index2)
             {
                 return false;
             }
@@ -277,7 +279,7 @@ namespace Memory
                 secondCardNumber = cardNumber;
                 LoadCard(secondCardNumber);
                 DisableAllCards();
-                //flipTimer_Tick(sender, e);
+                flipTimer.Start();
             }
         }
 
@@ -304,12 +306,13 @@ namespace Memory
              *      enable all of the cards left on the board
              * end if
              */
+              flipTimer.Stop();
 
               if (IsMatch(firstCardNumber, secondCardNumber))
               {
                   matches++;
-                  //HideCard()
-                  //HideCard()
+                  HideCard(firstCardNumber);
+                  HideCard(secondCardNumber);
                   firstCardNumber = NOT_PICKED_YET;
                   secondCardNumber = NOT_PICKED_YET;
 
@@ -319,15 +322,16 @@ namespace Memory
                   }
                   else
                   {
-                      EnableAllVisibleCards();
+                     EnableAllVisibleCards();
                   }
               }
               else
               {
-
-                  firstCardNumber = NOT_PICKED_YET;
-                  secondCardNumber = NOT_PICKED_YET;
-                  EnableAllVisibleCards();
+                   LoadCardBack(firstCardNumber);
+                   LoadCardBack(secondCardNumber);
+                   firstCardNumber = NOT_PICKED_YET;
+                   secondCardNumber = NOT_PICKED_YET;
+                   EnableAllVisibleCards();
               }
 
 
