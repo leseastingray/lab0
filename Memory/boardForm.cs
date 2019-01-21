@@ -4,6 +4,7 @@ using System.ComponentModel;
 using System.Data;
 using System.Drawing;
 using System.Linq;
+using System.IO;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
@@ -136,14 +137,14 @@ namespace Memory
         private void LoadCard(int i)
         {
             PictureBox card = GetCard(i);
-            card.Image = Image.FromFile(System.Environment.CurrentDirectory + "\\Cards\\" + GetCardFilename(i));
+            card.Image = Image.FromFile(Path.Combine(System.Environment.CurrentDirectory, Path.Combine("Cards",  GetCardFilename(i))));
         }
 
         // This method loads the image for the back of a card in a picture box
         private void LoadCardBack(int i)
         {
             PictureBox card = GetCard(i);
-            card.Image = Image.FromFile(System.Environment.CurrentDirectory + "\\Cards\\black_back.jpg");
+            card.Image = Image.FromFile(Path.Combine(System.Environment.CurrentDirectory,  Path.Combine("Cards", "black_back.jpg")));
         }
 
         // TODO:  students should write all of these!!!
@@ -252,7 +253,6 @@ namespace Memory
         {
             PictureBox card = (PictureBox)sender;
             int cardNumber = int.Parse(card.Name.Substring(4));
-
 
             /*
              * if the first card = isn't picked yet
