@@ -5,7 +5,7 @@ services:
             context: ./
             dockerfile: ./mono.dockerfile
         environment:
-            DISPLAY: $DISPLAY
+            DISPLAY: 192.168.0.202:0
         volumes:    
             - "/tmp/.X11-unix:/tmp/.X11-unix:rw"
             - '.:/root/lab0'
