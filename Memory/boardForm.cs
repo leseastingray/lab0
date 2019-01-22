@@ -76,7 +76,7 @@ namespace Memory
              */
             string firstCard = GetCardValue(index1);
             string secondCard = GetCardValue(index2);
-            if (index1 != index2)
+            if (firstCard != secondCard)
             {
                 return false;
             }
@@ -115,22 +115,18 @@ namespace Memory
             Random rand = new Random();
             int first = rand.Next(20) + 1;
             string firstValue = GetCardFilename(first);
-            string tempValue = firstValue;
             int second = rand.Next(20) + 1;
             string secondValue = GetCardFilename(second);
 
             for (int i = 1; i <= 20; i++)
             {
-              if (first != second)
-              {
-                  SetCardFilename(i, secondValue);
-                  firstValue = secondValue;
-                  secondValue = tempValue;
-              }
-              else
-              {
-                second = rand.Next(20) + 1;
-              }
+                while (first == second)
+                {
+                    second = rand.Next(20) + 1;
+                    secondValue = GetCardFilename(second);
+                }
+                first = rand.Next(20) + 1;
+                firstValue = GetCardFilename(first);
             }
         }
 
@@ -333,8 +329,6 @@ namespace Memory
                    secondCardNumber = NOT_PICKED_YET;
                    EnableAllVisibleCards();
               }
-
-
         }
         #endregion
     }
